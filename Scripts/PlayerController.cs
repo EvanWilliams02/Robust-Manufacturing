@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; 
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,11 +11,14 @@ public class PlayerController : MonoBehaviour
     private float jumpSpeed = 3f;
         
     public Transform groundCheckPoint;
-    public float groundCheckRadius = 4.28f; 
+    public float groundCheckRadius = 0.2f; 
     public LayerMask groundLayer;
     private bool isTouchingGround;
 
     public LevelManager gameLevelManager;
+
+    public bool reachedEnd = false; 
+    private int nextSceneIndex = 0;
 
     public Vector3 respawnPoint;
     
@@ -51,6 +55,13 @@ public class PlayerController : MonoBehaviour
         if(other.gameObject.CompareTag("FallDetector"))
         {
              gameLevelManager.Respawn();  
+		}
+        
+        if(other.gameObject.CompareTag("Light"))
+        {
+            reachedEnd = true;
+            nextSceneIndex += 1;
+            SceneManager.LoadScene(nextSceneIndex, LoadSceneMode.Single);
 		}
     }
 
